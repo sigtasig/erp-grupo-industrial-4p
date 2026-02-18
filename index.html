@@ -90,7 +90,6 @@
         
         .hidden { display: none !important; }
         
-        /* Dashboard */
         .dashboard {
             display: none;
             width: 100%;
@@ -331,14 +330,29 @@
             font-weight: 600;
         }
         
-        .chart-container {
-            height: 300px;
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+        
+        .activity-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .activity-item {
+            padding: 10px;
+            border-left: 3px solid #1e3c72;
+            margin-bottom: 10px;
             background: #f8f9fa;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .activity-item small {
+            color: #999;
+            display: block;
+            margin-top: 5px;
         }
         
         .notification {
@@ -381,31 +395,6 @@
         }
         
         .low-stock { color: #e74c3c; font-weight: bold; }
-        
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 20px;
-        }
-        
-        .activity-list {
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        
-        .activity-item {
-            padding: 10px;
-            border-left: 3px solid #1e3c72;
-            margin-bottom: 10px;
-            background: #f8f9fa;
-            border-radius: 0 5px 5px 0;
-        }
-        
-        .activity-item small {
-            color: #999;
-            display: block;
-            margin-top: 5px;
-        }
         
         @media print {
             .sidebar, .header button, .actions, .search-box { display: none !important; }
@@ -606,7 +595,6 @@
                             <option value="">Todos los estados</option>
                             <option value="Pendiente">Pendiente</option>
                             <option value="Recibido">Recibido</option>
-                            <option value="Cancelado">Cancelado</option>
                         </select>
                     </div>
                     
@@ -722,23 +710,18 @@
                     
                     <div class="card">
                         <h3>📊 Gráfico de Ventas Mensuales</h3>
-                        <div class="chart-container" id="chartVentas">
-                            <div style="text-align: center;">
-                                <div style="display: flex; align-items: flex-end; justify-content: center; gap: 20px; height: 200px;">
-                                    <div style="display: flex; flex-direction: column; align-items: center;">
-                                        <div style="width: 40px; background: #1e3c72; height: 120px; border-radius: 5px 5px 0 0;"></div>
-                                        <span style="margin-top: 10px; font-size: 12px;">Ene</span>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; align-items: center;">
-                                        <div style="width: 40px; background: #3498db; height: 150px; border-radius: 5px 5px 0 0;"></div>
-                                        <span style="margin-top: 10px; font-size: 12px;">Feb</span>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; align-items: center;">
-                                        <div style="width: 40px; background: #1e3c72; height: 100px; border-radius: 5px 5px 0 0;"></div>
-                                        <span style="margin-top: 10px; font-size: 12px;">Mar</span>
-                                    </div>
-                                </div>
-                                <p style="margin-top: 20px; color: #666;">Ventas de los últimos 3 meses</p>
+                        <div style="display: flex; align-items: flex-end; justify-content: center; gap: 20px; height: 200px; padding: 20px;">
+                            <div style="display: flex; flex-direction: column; align-items: center;">
+                                <div style="width: 40px; background: #1e3c72; height: 120px; border-radius: 5px 5px 0 0;"></div>
+                                <span style="margin-top: 10px; font-size: 12px;">Ene</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; align-items: center;">
+                                <div style="width: 40px; background: #3498db; height: 150px; border-radius: 5px 5px 0 0;"></div>
+                                <span style="margin-top: 10px; font-size: 12px;">Feb</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; align-items: center;">
+                                <div style="width: 40px; background: #1e3c72; height: 100px; border-radius: 5px 5px 0 0;"></div>
+                                <span style="margin-top: 10px; font-size: 12px;">Mar</span>
                             </div>
                         </div>
                     </div>
@@ -1247,7 +1230,6 @@
             populateSelects();
             renderAllTables();
             
-            // Set fechas default
             document.getElementById('ventaFecha').valueAsDate = new Date();
             document.getElementById('compraFecha').valueAsDate = new Date();
         }
@@ -1258,7 +1240,6 @@
                 const data = JSON.parse(saved);
                 Object.assign(DB, data);
             } else {
-                // Datos de demo iniciales
                 addDemoData();
             }
         }
@@ -1268,7 +1249,6 @@
         }
 
         function addDemoData() {
-            // Productos demo
             DB.productos = [
                 { id: 1, codigo: 'PRD-001', nombre: 'Tornillos Hexagonales 1/4', categoria: 'Ferretería', unidad: 'Caja', stock: 50, stockMin: 10, costo: 45.00, precio: 65.00, descripcion: 'Caja con 100 piezas' },
                 { id: 2, codigo: 'PRD-002', nombre: 'Cable Eléctrico 12 AWG', categoria: 'Eléctrico', unidad: 'Metro', stock: 200, stockMin: 50, costo: 12.50, precio: 18.00, descripcion: 'Rojo' },
@@ -1277,28 +1257,24 @@
                 { id: 5, codigo: 'PRD-005', nombre: 'Tubo PVC 1/2"', categoria: 'Plomería', unidad: 'Metro', stock: 100, stockMin: 20, costo: 15.00, precio: 25.00, descripcion: 'Presión' }
             ];
 
-            // Clientes demo
             DB.clientes = [
                 { id: 1, nombre: 'Constructora del Norte', rfc: 'CDN123456ABC', contacto: 'Juan Pérez', telefono: '555-0101', email: 'juan@cdn.com', credito: 50000, saldo: 12500, direccion: 'Av. Industrial 100' },
                 { id: 2, nombre: 'Ferretería La Esquina', rfc: 'FLE987654XYZ', contacto: 'María López', telefono: '555-0202', email: 'maria@ferre.com', credito: 25000, saldo: 0, direccion: 'Calle Principal 50' },
                 { id: 3, nombre: 'Taller Mecánico Speed', rfc: 'TMS456789DEF', contacto: 'Carlos Ruiz', telefono: '555-0303', email: 'carlos@speed.com', credito: 15000, saldo: 3200, direccion: 'Blvd. Automotriz 200' }
             ];
 
-            // Proveedores demo
             DB.proveedores = [
                 { id: 1, empresa: 'Ferretería Mayorista SA', rfc: 'FMA111222ABC', contacto: 'Pedro Gómez', telefono: '555-1001', email: 'pedro@fma.com', diasCredito: 30, direccion: 'Zona Industrial Norte' },
                 { id: 2, empresa: 'Eléctricos del Centro', rfc: 'EDC333444XYZ', contacto: 'Ana Martínez', telefono: '555-1002', email: 'ana@edc.com', diasCredito: 15, direccion: 'Av. Tecnología 300' },
                 { id: 3, empresa: 'Herramientas Pro', rfc: 'HPR555666DEF', contacto: 'Luis Hernández', telefono: '555-1003', email: 'luis@hpro.com', diasCredito: 45, direccion: 'Parque Industrial Sur' }
             ];
 
-            // Ventas demo
             DB.ventas = [
                 { id: 1, folio: 'VT-2026-001', fecha: '2026-02-15', clienteId: 1, productos: [{productoId: 1, cantidad: 2, precio: 65}, {productoId: 2, cantidad: 10, precio: 18}], total: 310, estado: 'Pagado', metodoPago: 'Transferencia', notas: '' },
                 { id: 2, folio: 'VT-2026-002', fecha: '2026-02-17', clienteId: 2, productos: [{productoId: 3, cantidad: 1, precio: 180}], total: 180, estado: 'Pendiente', metodoPago: 'Efectivo', notas: '' },
                 { id: 3, folio: 'VT-2026-003', fecha: '2026-02-18', clienteId: 3, productos: [{productoId: 1, cantidad: 5, precio: 65}, {productoId: 5, cantidad: 20, precio: 25}], total: 825, estado: 'Pagado', metodoPago: 'Tarjeta', notas: '' }
             ];
 
-            // Compras demo
             DB.compras = [
                 { id: 1, folio: 'OC-2026-001', fecha: '2026-02-10', proveedorId: 1, productos: [{productoId: 1, cantidad: 20, costo: 45}, {productoId: 3, cantidad: 10, costo: 120}], total: 2100, estado: 'Recibido', factura: 'F-1234' },
                 { id: 2, folio: 'OC-2026-002', fecha: '2026-02-16', proveedorId: 2, productos: [{productoId: 2, cantidad: 100, costo: 12.5}], total: 1250, estado: 'Recibido', factura: 'A-5678' }
@@ -1398,6 +1374,23 @@
             document.getElementById('modal' + tipo.charAt(0).toUpperCase() + tipo.slice(1)).style.display = 'none';
         }
 
+        function loadDataForEdit(tipo, id) {
+            if (tipo === 'producto') {
+                const p = DB.productos.find(p => p.id == id);
+                document.getElementById('prodId').value = p.id;
+                document.getElementById('prodCodigo').value = p.codigo;
+                document.getElementById('prodNombre').value = p.nombre;
+                document.getElementById('prodCategoria').value = p.categoria;
+                document.getElementById('prodUnidad').value = p.unidad;
+                document.getElementById('prodStock').value = p.stock;
+                document.getElementById('prodStockMin').value = p.stockMin;
+                document.getElementById('prodCosto').value = p.costo;
+                document.getElementById('prodPrecio').value = p.precio;
+                document.getElementById('prodDescripcion').value = p.descripcion || '';
+                document.getElementById('tituloProducto').textContent = 'Editar Producto';
+            }
+        }
+
         // ==================== PRODUCTOS ====================
 
         function saveProducto(e) {
@@ -1434,19 +1427,8 @@
         }
 
         function editProducto(id) {
-            const p = DB.productos.find(p => p.id == id);
-            document.getElementById('prodId').value = p.id;
-            document.getElementById('prodCodigo').value = p.codigo;
-            document.getElementById('prodNombre').value = p.nombre;
-            document.getElementById('prodCategoria').value = p.categoria;
-            document.getElementById('prodUnidad').value = p.unidad;
-            document.getElementById('prodStock').value = p.stock;
-            document.getElementById('prodStockMin').value = p.stockMin;
-            document.getElementById('prodCosto').value = p.costo;
-            document.getElementById('prodPrecio').value = p.precio;
-            document.getElementById('prodDescripcion').value = p.descripcion || '';
-            document.getElementById('tituloProducto').textContent = 'Editar Producto';
-            openModal('producto', id);
+            loadDataForEdit('producto', id);
+            openModal('producto');
         }
 
         function deleteProducto(id) {
@@ -1565,24 +1547,48 @@
             showNotification('Venta guardada correctamente', 'success');
         }
 
-        function deleteVenta(id) {
-            if (confirm('¿Cancelar esta venta?')) {
-                const v = DB.ventas.find(v => v.id == id);
-                
-                // Regresar stock
-                v.productos.forEach(item => {
-                    const prod = DB.productos.find(p => p.id == item.productoId);
-                    if (prod) prod.stock += item.cantidad;
-                });
-                
-                DB.ventas = DB.ventas.filter(v => v.id != id);
-                saveData();
-                renderVentas();
-                renderProductos();
-                updateDashboard();
-                addActivity(`Venta cancelada: ${v.folio}`);
-                showNotification('Venta cancelada', 'info');
-            }
+        function verVenta(id) {
+            const v = DB.ventas.find(venta => venta.id == id);
+            const cliente = DB.clientes.find(c => c.id == v.clienteId);
+            
+            let productosDetalle = v.productos.map(p => {
+                const prod = DB.productos.find(prod => prod.id == p.productoId);
+                return `- ${prod ? prod.nombre : 'Producto'}: ${p.cantidad} x $${p.precio.toFixed(2)} = $${(p.cantidad * p.precio).toFixed(2)}`;
+            }).join('\n');
+            
+            alert(`VENTA ${v.folio}\n\nCliente: ${cliente ? cliente.nombre : 'N/A'}\nFecha: ${v.fecha}\nEstado: ${v.estado}\nMétodo de pago: ${v.metodoPago}\n\nPRODUCTOS:\n${productosDetalle}\n\nTOTAL: $${v.total.toFixed(2)}`);
+        }
+
+        function cambiarEstadoVenta(id) {
+            const v = DB.ventas.find(venta => venta.id == id);
+            const estados = ['Pendiente', 'Pagado', 'Enviado'];
+            const currentIndex = estados.indexOf(v.estado);
+            const nextEstado = estados[(currentIndex + 1) % estados.length];
+            
+            v.estado = nextEstado;
+            saveData();
+            renderVentas();
+            addActivity(`Venta ${v.folio} cambió a: ${nextEstado}`);
+            showNotification(`Estado actualizado a: ${nextEstado}`, 'success');
+        }
+
+        function cancelarVenta(id) {
+            if (!confirm('¿Cancelar esta venta? El stock será devuelto al inventario.')) return;
+            
+            const v = DB.ventas.find(venta => venta.id == id);
+            
+            v.productos.forEach(item => {
+                const prod = DB.productos.find(p => p.id == item.productoId);
+                if (prod) prod.stock += item.cantidad;
+            });
+            
+            v.estado = 'Cancelado';
+            saveData();
+            renderVentas();
+            renderProductos();
+            updateDashboard();
+            addActivity(`Venta cancelada: ${v.folio}`);
+            showNotification('Venta cancelada - Stock devuelto', 'info');
         }
 
         // ==================== COMPRAS ====================
@@ -1659,229 +1665,11 @@
                 factura: document.getElementById('compraFactura').value
             };
             
-            // Aumentar stock si está recibido
-            if (compra.estado === 'Recibido') {
-                productosCompraTemp.forEach(item => {
-                    const prod = DB.productos.find(p => p.id == item.productoId);
-                    prod.stock += item.cantidad;
-                    // Actualizar costo promedio
-                    prod.costo = ((prod.costo * prod.stock) + (item.costo * item.cantidad)) / (prod.stock + item.cantidad);
-                });
-            }
-            
-            DB.compras.push(compra);
-            saveData();
-            renderCompras();
-            renderProductos();
-            closeModal('compra');
-            updateDashboard();
-            addActivity(`Compra creada: ${compra.folio} - $${total.toFixed(2)}`);
-            showNotification('Compra guardada correctamente', 'success');
-        }
-
-        function recibirCompra(id) {
-            const compra = DB.compras.find(c => c.id == id);
-            if (compra.estado === 'Recibido') {
-                showNotification('Esta compra ya fue recibida', 'warning');
-                return;
-            }
-            
-            compra.productos.forEach(item => {
-                const prod = DB.productos.find(p => p.id == item.productoId);
-                prod.stock += item.cantidad;
-            });
-            
-            compra.estado = 'Recibido';
-            saveData();
-            renderCompras();
-            renderProductos();
-            updateDashboard();
-            addActivity(`Compra recibida: ${compra.folio}`);
-            showNotification('Compra marcada como recibida', 'success');
-        }
-
-        // ==================== CLIENTES ====================
-
-        function saveCliente(e) {
-            e.preventDefault();
-            
-            const id = document.getElementById('cliId').value;
-            const cliente = {
-                id: id ? parseInt(id) : Date.now(),
-                nombre: document.getElementById('cliNombre').value,
-                rfc: document.getElementById('cliRFC').value,
-                contacto: document.getElementById('cliContacto').value,
-                telefono: document.getElementById('cliTelefono').value,
-                email: document.getElementById('cliEmail').value,
-                credito: parseFloat(document.getElementById('cliCredito').value) || 0,
-                saldo: 0,
-                direccion: document.getElementById('cliDireccion').value
-            };
-            
-            if (id) {
-                const index = DB.clientes.findIndex(c => c.id == id);
-                cliente.saldo = DB.clientes[index].saldo;
-                DB.clientes[index] = cliente;
-                addActivity(`Cliente actualizado: ${cliente.nombre}`);
-            } else {
-                DB.clientes.push(cliente);
-                addActivity(`Cliente creado: ${cliente.nombre}`);
-            }
-            
-            saveData();
-            renderClientes();
-            closeModal('cliente');
-            updateDashboard();
-            populateSelects();
-            showNotification('Cliente guardado correctamente', 'success');
-        }
-
-        function editCliente(id) {
-            const c = DB.clientes.find(c => c.id == id);
-            document.getElementById('cliId').value = c.id;
-            document.getElementById('cliNombre').value = c.nombre;
-            document.getElementById('cliRFC').value = c.rfc || '';
-            document.getElementById('cliContacto').value = c.contacto || '';
-            document.getElementById('cliTelefono').value = c.telefono;
-            document.getElementById('cliEmail').value = c.email || '';
-            document.getElementById('cliCredito').value = c.credito || 0;
-            document.getElementById('cliDireccion').value = c.direccion || '';
-            document.getElementById('tituloCliente').textContent = 'Editar Cliente';
-            openModal('cliente', id);
-        }
-
-        function deleteCliente(id) {
-            if (confirm('¿Eliminar este cliente?')) {
-                const c = DB.clientes.find(c => c.id == id);
-                DB.clientes = DB.clientes.filter(c => c.id != id);
-                saveData();
-                renderClientes();
-                updateDashboard();
-                populateSelects();
-                addActivity(`Cliente eliminado: ${c.nombre}`);
-                showNotification('Cliente eliminado', 'info');
-            }
-        }
-
-        // ==================== PROVEEDORES ====================
-
-        function saveProveedor(e) {
-            e.preventDefault();
-            
-            const id = document.getElementById('provId').value;
-            const proveedor = {
-                id: id ? parseInt(id) : Date.now(),
-                empresa: document.getElementById('provEmpresa').value,
-                rfc: document.getElementById('provRFC').value,
-                contacto: document.getElementById('provContacto').value,
-                telefono: document.getElementById('provTelefono').value,
-                email: document.getElementById('provEmail').value,
-                diasCredito: parseInt(document.getElementById('provDiasCredito').value) || 0,
-                direccion: document.getElementById('provDireccion').value
-            };
-            
-            if (id) {
-                const index = DB.proveedores.findIndex(p => p.id == id);
-                DB.proveedores[index] = proveedor;
-                addActivity(`Proveedor actualizado: ${proveedor.empresa}`);
-            } else {
-                DB.proveedores.push(proveedor);
-                addActivity(`Proveedor creado: ${proveedor.empresa}`);
-            }
-            
-            saveData();
-            renderProveedores();
-            closeModal('proveedor');
-            populateSelects();
-            showNotification('Proveedor guardado correctamente', 'success');
-        }
-
-        function editProveedor(id) {
-            const p = DB.proveedores.find(p => p.id == id);
-            document.getElementById('provId').value = p.id;
-            document.getElementById('provEmpresa').value = p.empresa;
-            document.getElementById('provRFC').value = p.rfc || '';
-            document.getElementById('provContacto').value = p.contacto || '';
-            document.getElementById('provTelefono').value = p.telefono;
-            document.getElementById('provEmail').value = p.email || '';
-            document.getElementById('provDiasCredito').value = p.diasCredito || 0;
-            document.getElementById('provDireccion').value = p.direccion || '';
-            document.getElementById('tituloProveedor').textContent = 'Editar Proveedor';
-            openModal('proveedor', id);
-        }
-
-        function deleteProveedor(id) {
-            if (confirm('¿Eliminar este proveedor?')) {
-                const p = DB.proveedores.find(p => p.id == id);
-                DB.proveedores = DB.proveedores.filter(p => p.id != id);
-                saveData();
-                renderProveedores();
-                populateSelects();
-                addActivity(`Proveedor eliminado: ${p.empresa}`);
-                showNotification('Proveedor eliminado', 'info');
-            }
-        }
-
-        // ==================== RENDERIZADO ====================
-
-        function renderAllTables() {
-            renderProductos();
-            renderVentas();
-            renderCompras();
-            renderClientes();
-            renderProveedores();
-        }
-
-        function renderProductos() {
-            const tbody = document.querySelector('#tablaProductos tbody');
-            const search = document.getElementById('searchProducto').value.toLowerCase();
-            const categoria = document.getElementById('filterCategoria').value;
-            
-            tbody.innerHTML = '';
-            
-            DB.productos.filter(p => {
-                const matchSearch = p.nombre.toLowerCase().includes(search) || p.codigo.toLowerCase().includes(search);
-                const matchCat = !categoria || p.categoria === categoria;
-                return matchSearch && matchCat;
-            }).forEach(p => {
-                const estado = p.stock <= p.stockMin ? 'danger' : p.stock <= p.stockMin * 1.5 ? 'warning' : 'success';
-                const estadoText = p.stock <= p.stockMin ? 'Crítico' : p.stock <= p.stockMin * 1.5 ? 'Bajo' : 'OK';
-                const stockClass = p.stock <= p.stockMin ? 'low-stock' : '';
-                
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${p.codigo}</td>
-                        <td>${p.nombre}</td>
-                        <td>${p.categoria}</td>
-                        <td class="${stockClass}">${p.stock} ${p.unidad}</td>        // ==================== COMPRAS (CONTINUACIÓN) ====================
-
-        function saveCompra(e) {
-            e.preventDefault();
-            
-            if (productosCompraTemp.length === 0) {
-                showNotification('Agrega al menos un producto', 'error');
-                return;
-            }
-            
-            const total = productosCompraTemp.reduce((sum, item) => sum + (item.cantidad * item.costo), 0);
-            const compra = {
-                id: Date.now(),
-                folio: 'OC-' + new Date().getFullYear() + '-' + String(DB.compras.length + 1).padStart(3, '0'),
-                fecha: document.getElementById('compraFecha').value,
-                proveedorId: parseInt(document.getElementById('compraProveedor').value),
-                productos: productosCompraTemp.map(p => ({productoId: p.productoId, cantidad: p.cantidad, costo: p.costo})),
-                total: total,
-                estado: document.getElementById('compraEstado').value,
-                factura: document.getElementById('compraFactura').value
-            };
-            
-            // Aumentar stock si está recibido
             if (compra.estado === 'Recibido') {
                 productosCompraTemp.forEach(item => {
                     const prod = DB.productos.find(p => p.id == item.productoId);
                     if (prod) {
                         prod.stock += item.cantidad;
-                        // Actualizar costo promedio ponderado
                         const costoTotalActual = prod.costo * (prod.stock - item.cantidad);
                         const costoTotalNuevo = item.costo * item.cantidad;
                         prod.costo = (costoTotalActual + costoTotalNuevo) / prod.stock;
@@ -1910,7 +1698,6 @@
                 const prod = DB.productos.find(p => p.id == item.productoId);
                 if (prod) {
                     prod.stock += item.cantidad;
-                    // Actualizar costo promedio
                     const costoTotalActual = prod.costo * prod.stock;
                     const costoTotalNuevo = item.costo * item.cantidad;
                     prod.costo = (costoTotalActual + costoTotalNuevo) / (prod.stock + item.cantidad);
@@ -1930,7 +1717,6 @@
             if (confirm('¿Eliminar esta orden de compra?')) {
                 const c = DB.compras.find(compra => compra.id == id);
                 
-                // Si ya fue recibida, revertir stock
                 if (c.estado === 'Recibido') {
                     c.productos.forEach(item => {
                         const prod = DB.productos.find(p => p.id == item.productoId);
@@ -1946,6 +1732,18 @@
                 addActivity(`Compra eliminada: ${c.folio}`);
                 showNotification('Compra eliminada', 'info');
             }
+        }
+
+        function verCompra(id) {
+            const c = DB.compras.find(compra => compra.id == id);
+            const prov = DB.proveedores.find(p => p.id == c.proveedorId);
+            
+            let productosDetalle = c.productos.map(p => {
+                const prod = DB.productos.find(prod => prod.id == p.productoId);
+                return `- ${prod ? prod.nombre : 'Producto'}: ${p.cantidad} x $${p.costo.toFixed(2)} = $${(p.cantidad * p.costo).toFixed(2)}`;
+            }).join('\n');
+            
+            alert(`COMPRA ${c.folio}\n\nProveedor: ${prov ? prov.empresa : 'N/A'}\nFecha: ${c.fecha}\nEstado: ${c.estado}\nFactura: ${c.factura || 'N/A'}\n\nPRODUCTOS:\n${productosDetalle}\n\nTOTAL: $${c.total.toFixed(2)}`);
         }
 
         // ==================== CLIENTES ====================
@@ -2003,7 +1801,6 @@
         function deleteCliente(id) {
             if (confirm('¿Eliminar este cliente?')) {
                 const c = DB.clientes.find(c => c.id == id);
-                // Verificar si tiene ventas
                 const tieneVentas = DB.ventas.some(v => v.clienteId == id);
                 if (tieneVentas) {
                     showNotification('No se puede eliminar: tiene ventas asociadas', 'error');
@@ -2080,7 +1877,6 @@
         function deleteProveedor(id) {
             if (confirm('¿Eliminar este proveedor?')) {
                 const p = DB.proveedores.find(p => p.id == id);
-                // Verificar si tiene compras
                 const tieneCompras = DB.compras.some(c => c.proveedorId == id);
                 if (tieneCompras) {
                     showNotification('No se puede eliminar: tiene compras asociadas', 'error');
@@ -2096,7 +1892,7 @@
             }
         }
 
-        // ==================== RENDERIZADO DE TABLAS ====================
+        // ==================== RENDERIZADO ====================
 
         function renderAllTables() {
             renderProductos();
@@ -2148,7 +1944,6 @@
                 `;
             });
             
-            // Actualizar filtro de categorías
             const cats = [...new Set(DB.productos.map(p => p.categoria))].sort();
             const select = document.getElementById('filterCategoria');
             const currentVal = select.value;
@@ -2180,7 +1975,6 @@
                 return matchSearch && matchEstado && matchFecha;
             });
             
-            // Ordenar por fecha descendente
             filtradas.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
             
             filtradas.forEach(v => {
@@ -2273,11 +2067,6 @@
                        (c.email && c.email.toLowerCase().includes(search)) ||
                        (c.rfc && c.rfc.toLowerCase().includes(search));
             }).forEach(c => {
-                const ventasCount = DB.ventas.filter(v => v.clienteId == c.id && v.estado !== 'Cancelado').length;
-                const totalComprado = DB.ventas
-                    .filter(v => v.clienteId == c.id && v.estado !== 'Cancelado')
-                    .reduce((sum, v) => sum + v.total, 0);
-                
                 tbody.innerHTML += `
                     <tr>
                         <td>CLI-${String(c.id).padStart(3, '0')}</td>
@@ -2308,11 +2097,6 @@
                        p.telefono.includes(search) ||
                        (p.contacto && p.contacto.toLowerCase().includes(search));
             }).forEach(p => {
-                const comprasCount = DB.compras.filter(c => c.proveedorId == p.id).length;
-                const totalComprado = DB.compras
-                    .filter(c => c.proveedorId == p.id)
-                    .reduce((sum, c) => sum + c.total, 0);
-                
                 tbody.innerHTML += `
                     <tr>
                         <td>PROV-${String(p.id).padStart(3, '0')}</td>
@@ -2330,61 +2114,118 @@
             });
         }
 
-        // ==================== FUNCIONES ADICIONALES ====================
+        // ==================== UTILIDADES ====================
 
-        function cambiarEstadoVenta(id) {
-            const v = DB.ventas.find(venta => venta.id == id);
-            const estados = ['Pendiente', 'Pagado', 'Enviado'];
-            const currentIndex = estados.indexOf(v.estado);
-            const nextEstado = estados[(currentIndex + 1) % estados.length];
-            
-            v.estado = nextEstado;
-            saveData();
-            renderVentas();
-            addActivity(`Venta ${v.folio} cambió a: ${nextEstado}`);
-            showNotification(`Estado actualizado a: ${nextEstado}`, 'success');
-        }
-
-        function cancelarVenta(id) {
-            if (!confirm('¿Cancelar esta venta? El stock será devuelto al inventario.')) return;
-            
-            const v = DB.ventas.find(venta => venta.id == id);
-            
-            // Devolver stock
-            v.productos.forEach(item => {
-                const prod = DB.productos.find(p => p.id == item.productoId);
-                if (prod) prod.stock += item.cantidad;
+        function populateSelects() {
+            const selCliente = document.getElementById('ventaCliente');
+            selCliente.innerHTML = '<option value="">Seleccionar cliente...</option>';
+            DB.clientes.forEach(c => {
+                selCliente.innerHTML += `<option value="${c.id}">${c.nombre}</option>`;
             });
             
-            v.estado = 'Cancelado';
+            const selProv = document.getElementById('compraProveedor');
+            selProv.innerHTML = '<option value="">Seleccionar proveedor...</option>';
+            DB.proveedores.forEach(p => {
+                selProv.innerHTML += `<option value="${p.id}">${p.empresa}</option>`;
+            });
+            
+            const selProdVenta = document.getElementById('ventaProdSelect');
+            selProdVenta.innerHTML = '<option value="">Seleccionar...</option>';
+            DB.productos.filter(p => p.stock > 0).forEach(p => {
+                selProdVenta.innerHTML += `<option value="${p.id}">${p.nombre} (Stock: ${p.stock})</option>`;
+            });
+            
+            const selProdCompra = document.getElementById('compraProdSelect');
+            selProdCompra.innerHTML = '<option value="">Seleccionar...</option>';
+            DB.productos.forEach(p => {
+                selProdCompra.innerHTML += `<option value="${p.id}">${p.nombre}</option>`;
+            });
+        }
+
+        function filterTable(tipo) {
+            if (tipo === 'productos') renderProductos();
+            else if (tipo === 'ventas') renderVentas();
+            else if (tipo === 'compras') renderCompras();
+            else if (tipo === 'clientes') renderClientes();
+            else if (tipo === 'proveedores') renderProveedores();
+        }
+
+        function updateDashboard() {
+            const totalVentas = DB.ventas.filter(v => v.estado !== 'Cancelado').reduce((sum, v) => sum + v.total, 0);
+            const totalCompras = DB.compras.reduce((sum, c) => sum + c.total, 0);
+            
+            document.getElementById('totalVentas').textContent = '$' + totalVentas.toFixed(2);
+            document.getElementById('totalCompras').textContent = '$' + totalCompras.toFixed(2);
+            document.getElementById('totalProductos').textContent = DB.productos.length;
+            document.getElementById('totalClientes').textContent = DB.clientes.length;
+            
+            const lowStock = DB.productos.filter(p => p.stock <= p.stockMin);
+            const lowStockDiv = document.getElementById('lowStockList');
+            if (lowStock.length > 0) {
+                lowStockDiv.innerHTML = lowStock.map(p => `
+                    <div style="padding: 10px; background: #fff3cd; margin-bottom: 5px; border-radius: 5px; border-left: 3px solid #f39c12;">
+                        <strong>${p.nombre}</strong><br>
+                        <small>Stock: ${p.stock} / Mín: ${p.stockMin}</small>
+                    </div>
+                `).join('');
+            } else {
+                lowStockDiv.innerHTML = '<div class="empty-state">No hay productos con stock bajo</div>';
+            }
+            
+            renderActivity();
+        }
+
+        function addActivity(descripcion) {
+            DB.actividad.unshift({
+                fecha: new Date().toISOString(),
+                descripcion: descripcion,
+                usuario: currentUser ? currentUser.nombre : 'Sistema'
+            });
+            if (DB.actividad.length > 50) DB.actividad.pop();
             saveData();
-            renderVentas();
-            renderProductos();
-            updateDashboard();
-            addActivity(`Venta cancelada: ${v.folio}`);
-            showNotification('Venta cancelada - Stock devuelto', 'info');
+            renderActivity();
         }
 
-        function verCompra(id) {
-            const c = DB.compras.find(compra => compra.id == id);
-            const prov = DB.proveedores.find(p => p.id == c.proveedorId);
+        function renderActivity() {
+            const div = document.getElementById('activityList');
+            if (DB.actividad.length === 0) {
+                div.innerHTML = '<div class="empty-state">No hay actividad reciente</div>';
+                return;
+            }
             
-            let productosDetalle = c.productos.map(p => {
-                const prod = DB.productos.find(prod => prod.id == p.productoId);
-                return `- ${prod ? prod.nombre : 'Producto'}: ${p.cantidad} x $${p.costo.toFixed(2)} = $${(p.cantidad * p.costo).toFixed(2)}`;
-            }).join('\n');
-            
-            alert(`COMPRA ${c.folio}\n\nProveedor: ${prov ? prov.empresa : 'N/A'}\nFecha: ${c.fecha}\nEstado: ${c.estado}\nFactura: ${c.factura || 'N/A'}\n\nPRODUCTOS:\n${productosDetalle}\n\nTOTAL: $${c.total.toFixed(2)}`);
+            div.innerHTML = DB.actividad.slice(0, 10).map(a => `
+                <div class="activity-item">
+                    ${a.descripcion}
+                    <small>${new Date(a.fecha).toLocaleString()} - ${a.usuario}</small>
+                </div>
+            `).join('');
         }
 
-        // ==================== REPORTES MEJORADOS ====================
+        function showNotification(message, type = 'info') {
+            const notif = document.createElement('div');
+            notif.className = `notification ${type}`;
+            notif.textContent = message;
+            document.body.appendChild(notif);
+            
+            setTimeout(() => {
+                notif.remove();
+            }, 3000);
+        }
+
+        // ==================== REPORTES ====================
+
+        function showReportTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.report-section').forEach(s => s.style.display = 'none');
+            
+            event.target.classList.add('active');
+            document.getElementById('report-' + tab).style.display = 'block';
+        }
 
         function updateReportes() {
-            // Calcular métricas
             const ventasValidas = DB.ventas.filter(v => v.estado !== 'Cancelado');
             const totalVentas = ventasValidas.reduce((sum, v) => sum + v.total, 0);
             
-            // Calcular costos de ventas
             let totalCostos = 0;
             ventasValidas.forEach(v => {
                 v.productos.forEach(p => {
@@ -2397,11 +2238,7 @@
             
             const utilidad = totalVentas - totalCostos;
             const margen = totalVentas > 0 ? (utilidad / totalVentas * 100) : 0;
-            
-            // Ticket promedio
             const ticketPromedio = ventasValidas.length > 0 ? totalVentas / ventasValidas.length : 0;
-            
-            // Rotación de inventario (simplificada)
             const valorInventario = DB.productos.reduce((sum, p) => sum + (p.stock * p.costo), 0);
             const rotacion = valorInventario > 0 ? (totalCostos / valorInventario) : 0;
             
@@ -2410,9 +2247,8 @@
             document.getElementById('rotacionInventario').textContent = rotacion.toFixed(2);
             document.getElementById('ticketPromedio').textContent = '$' + ticketPromedio.toFixed(2);
             
-            // Financiero
             const totalCompras = DB.compras.reduce((sum, c) => sum + c.total, 0);
-            const gastosOperativos = totalCompras * 0.1; // Estimado 10%
+            const gastosOperativos = totalCompras * 0.1;
             const utilidadNeta = utilidad - gastosOperativos;
             
             document.getElementById('finVentas').textContent = '$' + totalVentas.toFixed(2);
@@ -2421,14 +2257,12 @@
             document.getElementById('finGastos').textContent = '$' + gastosOperativos.toFixed(2);
             document.getElementById('finNeto').textContent = '$' + utilidadNeta.toFixed(2);
             
-            // Reporte de ventas por período
             const tbodyVentas = document.querySelector('#tablaReporteVentas tbody');
             tbodyVentas.innerHTML = '';
             
-            // Agrupar por mes
             const ventasPorMes = {};
             ventasValidas.forEach(v => {
-                const mes = v.fecha.substring(0, 7); // YYYY-MM
+                const mes = v.fecha.substring(0, 7);
                 if (!ventasPorMes[mes]) {
                     ventasPorMes[mes] = { count: 0, total: 0 };
                 }
@@ -2457,7 +2291,6 @@
                 `;
             });
             
-            // Reporte de inventario
             const tbodyInv = document.querySelector('#tablaReporteInventario tbody');
             tbodyInv.innerHTML = '';
             let valorTotalInventario = 0;
@@ -2491,7 +2324,69 @@
             document.getElementById('valorTotalInventario').textContent = '$' + valorTotalInventario.toFixed(2);
         }
 
-        // ==================== EXPORTACIÓN ====================
+        function generateReport(tipo) {
+            showNotification(`Generando reporte de ${tipo}...`, 'info');
+            setTimeout(() => {
+                window.print();
+            }, 500);
+        }
+
+        // ==================== CONFIGURACIÓN ====================
+
+        function saveConfig() {
+            DB.config.nombreEmpresa = document.getElementById('configNombreEmpresa').value;
+            DB.config.rfc = document.getElementById('configRFC').value;
+            DB.config.direccion = document.getElementById('configDireccion').value;
+            DB.config.telefono = document.getElementById('configTelefono').value;
+            DB.config.email = document.getElementById('configEmail').value;
+            DB.config.impuesto = parseFloat(document.getElementById('configImpuesto').value);
+            
+            saveData();
+            addActivity('Configuración actualizada');
+            showNotification('Configuración guardada', 'success');
+        }
+
+        function backupData() {
+            const dataStr = JSON.stringify(DB, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `erp_backup_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            showNotification('Respaldo descargado', 'success');
+        }
+
+        function restoreData(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    Object.assign(DB, data);
+                    saveData();
+                    renderAllTables();
+                    updateDashboard();
+                    populateSelects();
+                    showNotification('Datos restaurados correctamente', 'success');
+                    addActivity('Datos restaurados desde archivo');
+                } catch (err) {
+                    showNotification('Error al restaurar datos', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function clearAllData() {
+            if (confirm('¿ESTÁS SEGURO? Se borrarán TODOS los datos permanentemente.')) {
+                if (confirm('¿Realmente deseas borrar todo? Esta acción no se puede deshacer.')) {
+                    localStorage.removeItem('erp_data');
+                    location.reload();
+                }
+            }
+        }
 
         function exportData(tipo) {
             let data, filename, headers;
@@ -2505,7 +2400,6 @@
                 filename = 'clientes.csv';
                 headers = ['ID', 'Nombre', 'RFC', 'Contacto', 'Teléfono', 'Email', 'Crédito', 'Saldo', 'Dirección'];
             } else if (tipo === 'reporteVentas') {
-                // Generar reporte de ventas
                 const ventasValidas = DB.ventas.filter(v => v.estado !== 'Cancelado');
                 data = ventasValidas.map(v => {
                     const cliente = DB.clientes.find(c => c.id == v.clienteId);
@@ -2560,11 +2454,9 @@
             }
         };
 
-        // Inicializar al cargar
         if (document.getElementById('loginScreen').classList.contains('hidden')) {
             init();
         }
     </script>
 </body>
 </html>
-                        
