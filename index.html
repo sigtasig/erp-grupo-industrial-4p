@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grupo Industrial 4P - ERP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            color: #1e3c72;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .logo p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #1e3c72;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #1e3c72;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #2a5298;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            text-align: center;
+            margin-top: 15px;
+            display: none;
+            padding: 10px;
+            background: #fdeaea;
+            border-radius: 5px;
+        }
+        
+        .demo-info {
+            margin-top: 25px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid #1e3c72;
+        }
+        
+        .demo-info h3 {
+            color: #1e3c72;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .demo-info p {
+            color: #666;
+            font-size: 13px;
+            margin: 3px 0;
+        }
+        
+        .dashboard {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+            background: #f5f6fa;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background: #1e3c72;
+            color: white;
+            position: fixed;
+            height: 100vh;
+            padding: 20px;
+        }
+        
+        .sidebar h2 {
+            margin-bottom: 30px;
+            font-size: 20px;
+        }
+        
+        .sidebar nav ul {
+            list-style: none;
+        }
+        
+        .sidebar nav ul li {
+            margin-bottom: 15px;
+        }
+        
+        .sidebar nav ul li a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        .sidebar nav ul li a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+        }
+        
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            color: #1e3c72;
+        }
+        
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card h3 {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .number {
+            color: #1e3c72;
+            font-size: 32px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <div class="logo">
+            <h1>Grupo Industrial 4P</h1>
+            <p>Sistema de Gestión Empresarial</p>
+            <p style="font-size: 12px; color: #999; margin-top: 10px;">Creado por ELIAS</p>
+        </div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Correo Electrónico</label>
+                <input type="email" id="email" required placeholder="usuario@empresa.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" required placeholder="••••••••">
+            </div>
+            
+            <button type="submit">Iniciar Sesión</button>
+        </form>
+        
+        <div id="errorMsg" class="error-message">
+            Credenciales incorrectas. Intente nuevamente.
+        </div>
+        
+        <div class="demo-info">
+            <h3>Credenciales de Demo:</h3>
+            <p><strong>Email:</strong> demo@erppro.com</p>
+            <p><strong>Contraseña:</strong> demo123</p>
+        </div>
+        
+        <p style="text-align: center; margin-top: 20px; color: #666; font-size: 13px;">
+            ¿No tiene cuenta? Contacte al administrador
+        </p>
+    </div>
+
+    <!-- Dashboard Screen -->
+    <div id="dashboardScreen" class="dashboard">
+        <div class="sidebar">
+            <h2>Grupo Industrial 4P</h2>
+            <nav>
+                <ul>
+                    <li><a href="#" onclick="showSection('inicio')">🏠 Inicio</a></li>
+                    <li><a href="#" onclick="showSection('inventario')">📦 Inventario</a></li>
+                    <li><a href="#" onclick="showSection('ventas')">💰 Ventas</a></li>
+                    <li><a href="#" onclick="showSection('compras')">🛒 Compras</a></li>
+                    <li><a href="#" onclick="showSection('reportes')">📊 Reportes</a></li>
+                    <li><a href="#" onclick="showSection('config')">⚙️ Configuración</a></li>
+                </ul>
+            </nav>
+        </div>
+        
+        <div class="main-content">
+            <div class="header">
+                <h1>Panel de Control</h1>
+                <div>
+                    <span id="userDisplay" style="margin-right: 15px; color: #666;"></span>
+                    <button class="logout-btn" onclick="logout()">Cerrar Sesión</button>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Ventas del Mes</h3>
+                    <div class="number">$125,430</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Órdenes Pendientes</h3>
+                    <div class="number">23</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Productos en Stock</h3>
+                    <div class="number">1,847</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Clientes Activos</h3>
+                    <div class="number">156</div>
+                </div>
+            </div>
+            
+            <div style="background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                <h3 style="color: #1e3c72; margin-bottom: 15px;">Actividad Reciente</h3>
+                <p style="color: #666; line-height: 1.8;">
+                    • Nueva orden de compra #2345 procesada<br>
+                    • Stock actualizado: Producto A-123<br>
+                    • Cliente "Industrias del Norte" registrado<br>
+                    • Reporte mensual generado
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const VALID_CREDENTIALS = {
+            'demo@erppro.com': 'demo123',
+            'admin@4p.com': 'admin123',
+            'usuario@4p.com': 'user123'
+        };
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value.trim().toLowerCase();
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMsg');
+            
+            if (VALID_CREDENTIALS[email] && VALID_CREDENTIALS[email] === password) {
+                errorMsg.style.display = 'none';
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboardScreen').style.display = 'block';
+                document.getElementById('userDisplay').textContent = email;
+                
+                localStorage.setItem('erp_session', JSON.stringify({
+                    email: email,
+                    loginTime: new Date().toISOString()
+                }));
+            } else {
+                errorMsg.style.display = 'block';
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
+            }
+        });
+
+        window.addEventListener('load', function() {
+            const session = localStorage.getItem('erp_session');
+            if (session) {
+                const data = JSON.parse(session);
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboardScreen').style.display = 'block';
+                document.getElementById('userDisplay').textContent = data.email;
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem('erp_session');
+            document.getElementById('dashboardScreen').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'block';
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('errorMsg').style.display = 'none';
+        }
+
+        function showSection(section) {
+            alert('Sección ' + section + ' - En desarrollo');
+        }
+    </script>
+</body>
+</html>
