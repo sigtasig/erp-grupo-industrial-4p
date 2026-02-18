@@ -5,19 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grupo Industrial 4P - ERP</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
         
         .login-container {
@@ -27,27 +20,17 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             width: 100%;
             max-width: 400px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
         
-        .logo {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+        .logo { text-align: center; margin-bottom: 30px; }
+        .logo h1 { color: #1e3c72; font-size: 28px; margin-bottom: 10px; }
+        .logo p { color: #666; font-size: 14px; }
         
-        .logo h1 {
-            color: #1e3c72;
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-        
-        .logo p {
-            color: #666;
-            font-size: 14px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .form-group { margin-bottom: 20px; }
         
         label {
             display: block;
@@ -62,13 +45,9 @@
             border: 2px solid #ddd;
             border-radius: 5px;
             font-size: 16px;
-            transition: border-color 0.3s;
         }
         
-        input:focus {
-            outline: none;
-            border-color: #1e3c72;
-        }
+        input:focus { outline: none; border-color: #1e3c72; }
         
         button {
             width: 100%;
@@ -80,12 +59,9 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
         }
         
-        button:hover {
-            background: #2a5298;
-        }
+        button:hover { background: #2a5298; }
         
         .error-message {
             color: #e74c3c;
@@ -105,18 +81,12 @@
             border-left: 4px solid #1e3c72;
         }
         
-        .demo-info h3 {
-            color: #1e3c72;
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
+        .demo-info h3 { color: #1e3c72; font-size: 14px; margin-bottom: 8px; }
+        .demo-info p { color: #666; font-size: 13px; margin: 3px 0; }
         
-        .demo-info p {
-            color: #666;
-            font-size: 13px;
-            margin: 3px 0;
-        }
+        .hidden { display: none !important; }
         
+        /* Dashboard */
         .dashboard {
             display: none;
             width: 100%;
@@ -131,32 +101,27 @@
             position: fixed;
             height: 100vh;
             padding: 20px;
+            overflow-y: auto;
         }
         
-        .sidebar h2 {
-            margin-bottom: 30px;
-            font-size: 20px;
-        }
+        .sidebar h2 { margin-bottom: 30px; font-size: 20px; }
         
-        .sidebar nav ul {
-            list-style: none;
-        }
+        .sidebar nav ul { list-style: none; }
         
-        .sidebar nav ul li {
-            margin-bottom: 15px;
-        }
+        .sidebar nav ul li { margin-bottom: 5px; }
         
         .sidebar nav ul li a {
             color: white;
             text-decoration: none;
             display: block;
-            padding: 10px;
+            padding: 12px;
             border-radius: 5px;
-            transition: background 0.3s;
+            transition: all 0.3s;
+            cursor: pointer;
         }
         
-        .sidebar nav ul li a:hover {
-            background: rgba(255,255,255,0.1);
+        .sidebar nav ul li a:hover, .sidebar nav ul li a.active {
+            background: rgba(255,255,255,0.2);
         }
         
         .main-content {
@@ -175,9 +140,7 @@
             align-items: center;
         }
         
-        .header h1 {
-            color: #1e3c72;
-        }
+        .header h1 { color: #1e3c72; }
         
         .logout-btn {
             background: #e74c3c;
@@ -188,9 +151,12 @@
             cursor: pointer;
         }
         
+        .section { display: none; }
+        .section.active { display: block; }
+        
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
@@ -202,22 +168,88 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
-        .stat-card h3 {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 10px;
+        .stat-card h3 { color: #666; font-size: 14px; margin-bottom: 10px; }
+        .stat-card .number { color: #1e3c72; font-size: 28px; font-weight: bold; }
+        
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
         }
         
-        .stat-card .number {
-            color: #1e3c72;
-            font-size: 32px;
-            font-weight: bold;
+        .card h3 { color: #1e3c72; margin-bottom: 20px; }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th { background: #f8f9fa; color: #1e3c72; font-weight: 600; }
+        
+        tr:hover { background: #f8f9fa; }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+        
+        .btn-primary { background: #1e3c72; color: white; }
+        .btn-success { background: #27ae60; color: white; }
+        .btn-danger { background: #e74c3c; color: white; }
+        .btn-warning { background: #f39c12; color: white; }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-group label { font-size: 14px; margin-bottom: 5px; }
+        
+        select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .badge {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .badge-success { background: #d4edda; color: #155724; }
+        .badge-warning { background: #fff3cd; color: #856404; }
+        .badge-danger { background: #f8d7da; color: #721c24; }
+        
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .search-box input { flex: 1; }
     </style>
 </head>
 <body>
 
-    <!-- Login Screen -->
+    <!-- LOGIN -->
     <div id="loginScreen" class="login-container">
         <div class="logo">
             <h1>Grupo Industrial 4P</h1>
@@ -248,65 +280,488 @@
             <p><strong>Email:</strong> demo@erppro.com</p>
             <p><strong>Contraseña:</strong> demo123</p>
         </div>
-        
-        <p style="text-align: center; margin-top: 20px; color: #666; font-size: 13px;">
-            ¿No tiene cuenta? Contacte al administrador
-        </p>
     </div>
 
-    <!-- Dashboard Screen -->
+    <!-- DASHBOARD -->
     <div id="dashboardScreen" class="dashboard">
         <div class="sidebar">
-            <h2>Grupo Industrial 4P</h2>
+            <h2>🏭 Grupo 4P</h2>
             <nav>
                 <ul>
-                    <li><a href="#" onclick="showSection('inicio')">🏠 Inicio</a></li>
-                    <li><a href="#" onclick="showSection('inventario')">📦 Inventario</a></li>
-                    <li><a href="#" onclick="showSection('ventas')">💰 Ventas</a></li>
-                    <li><a href="#" onclick="showSection('compras')">🛒 Compras</a></li>
-                    <li><a href="#" onclick="showSection('reportes')">📊 Reportes</a></li>
-                    <li><a href="#" onclick="showSection('config')">⚙️ Configuración</a></li>
+                    <li><a onclick="showSection('inicio')" id="nav-inicio" class="active">🏠 Inicio</a></li>
+                    <li><a onclick="showSection('inventario')" id="nav-inventario">📦 Inventario</a></li>
+                    <li><a onclick="showSection('ventas')" id="nav-ventas">💰 Ventas</a></li>
+                    <li><a onclick="showSection('compras')" id="nav-compras">🛒 Compras</a></li>
+                    <li><a onclick="showSection('clientes')" id="nav-clientes">👥 Clientes</a></li>
+                    <li><a onclick="showSection('proveedores')" id="nav-proveedores">🚚 Proveedores</a></li>
+                    <li><a onclick="showSection('reportes')" id="nav-reportes">📊 Reportes</a></li>
+                    <li><a onclick="showSection('config')" id="nav-config">⚙️ Configuración</a></li>
                 </ul>
             </nav>
         </div>
         
         <div class="main-content">
             <div class="header">
-                <h1>Panel de Control</h1>
+                <h1 id="pageTitle">Panel de Control</h1>
                 <div>
                     <span id="userDisplay" style="margin-right: 15px; color: #666;"></span>
                     <button class="logout-btn" onclick="logout()">Cerrar Sesión</button>
                 </div>
             </div>
-            
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h3>Ventas del Mes</h3>
-                    <div class="number">$125,430</div>
+
+            <!-- INICIO -->
+            <div id="inicio" class="section active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Ventas del Mes</h3>
+                        <div class="number">$125,430</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Órdenes Pendientes</h3>
+                        <div class="number">23</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Productos en Stock</h3>
+                        <div class="number">1,847</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Clientes Activos</h3>
+                        <div class="number">156</div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <h3>Órdenes Pendientes</h3>
-                    <div class="number">23</div>
-                </div>
-                <div class="stat-card">
-                    <h3>Productos en Stock</h3>
-                    <div class="number">1,847</div>
-                </div>
-                <div class="stat-card">
-                    <h3>Clientes Activos</h3>
-                    <div class="number">156</div>
+                
+                <div class="card">
+                    <h3>📈 Actividad Reciente</h3>
+                    <table>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Acción</th>
+                            <th>Usuario</th>
+                            <th>Estado</th>
+                        </tr>
+                        <tr>
+                            <td>19/02/2026</td>
+                            <td>Nueva orden de compra #2345</td>
+                            <td>Admin</td>
+                            <td><span class="badge badge-success">Completado</span></td>
+                        </tr>
+                        <tr>
+                            <td>19/02/2026</td>
+                            <td>Stock actualizado: Producto A-123</td>
+                            <td>Operario</td>
+                            <td><span class="badge badge-success">Completado</span></td>
+                        </tr>
+                        <tr>
+                            <td>18/02/2026</td>
+                            <td>Cliente "Industrias del Norte" registrado</td>
+                            <td>Ventas</td>
+                            <td><span class="badge badge-warning">Pendiente</span></td>
+                        </tr>
+                        <tr>
+                            <td>18/02/2026</td>
+                            <td>Reporte mensual generado</td>
+                            <td>Sistema</td>
+                            <td><span class="badge badge-success">Completado</span></td>
+                        </tr>
+                    </table>
                 </div>
             </div>
-            
-            <div style="background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                <h3 style="color: #1e3c72; margin-bottom: 15px;">Actividad Reciente</h3>
-                <p style="color: #666; line-height: 1.8;">
-                    • Nueva orden de compra #2345 procesada<br>
-                    • Stock actualizado: Producto A-123<br>
-                    • Cliente "Industrias del Norte" registrado<br>
-                    • Reporte mensual generado
-                </p>
+
+            <!-- INVENTARIO -->
+            <div id="inventario" class="section">
+                <div class="card">
+                    <h3>📦 Gestión de Inventario</h3>
+                    <div class="search-box">
+                        <input type="text" placeholder="Buscar producto..." id="searchProduct">
+                        <button class="btn btn-primary" onclick="alert('Buscando...')">🔍 Buscar</button>
+                        <button class="btn btn-success" onclick="alert('Nuevo producto')">➕ Nuevo</button>
+                    </div>
+                    <table>
+                        <tr>
+                            <th>Código</th>
+                            <th>Producto</th>
+                            <th>Categoría</th>
+                            <th>Stock</th>
+                            <th>Precio</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                        <tr>
+                            <td>PRD-001</td>
+                            <td>Tornillos Hexagonales M8</td>
+                            <td>Ferretería</td>
+                            <td>500</td>
+                            <td>$0.50</td>
+                            <td><span class="badge badge-success">Disponible</span></td>
+                            <td>
+                                <button class="btn btn-primary">Editar</button>
+                                <button class="btn btn-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>PRD-002</td>
+                            <td>Placas de Acero 4x8</td>
+                            <td>Materiales</td>
+                            <td>45</td>
+                            <td>$120.00</td>
+                            <td><span class="badge badge-success">Disponible</span></td>
+                            <td>
+                                <button class="btn btn-primary">Editar</button>
+                                <button class="btn btn-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>PRD-003</td>
+                            <td>Valvulas de Control 2"</td>
+                            <td>Industrial</td>
+                            <td>8</td>
+                            <td>$340.00</td>
+                            <td><span class="badge badge-warning">Bajo Stock</span></td>
+                            <td>
+                                <button class="btn btn-primary">Editar</button>
+                                <button class="btn btn-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>PRD-004</td>
+                            <td>Selladores Industriales</td>
+                            <td>Químicos</td>
+                            <td>0</td>
+                            <td>$25.00</td>
+                            <td><span class="badge badge-danger">Agotado</span></td>
+                            <td>
+                                <button class="btn btn-primary">Editar</button>
+                                <button class="btn btn-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
+
+            <!-- VENTAS -->
+            <div id="ventas" class="section">
+                <div class="card">
+                    <h3>💰 Órdenes de Venta</h3>
+                    <div class="search-box">
+                        <input type="text" placeholder="Buscar orden...">
+                        <button class="btn btn-success">➕ Nueva Venta</button>
+                    </div>
+                    <table>
+                        <tr>
+                            <th>Orden #</th>
+                            <th>Cliente</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                        <tr>
+                            <td>VT-2026-001</td>
+                            <td>Constructora del Norte</td>
+                            <td>19/02/2026</td>
+                            <td>$12,500</td>
+                            <td><span class="badge badge-success">Pagado</span></td>
+                            <td>
+                                <button class="btn btn-primary">Ver</button>
+                                <button class="btn btn-warning">Facturar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>VT-2026-002</td>
+                            <td>Industrias Metálicas SA</td>
+                            <td>18/02/2026</td>
+                            <td>$8,340</td>
+                            <td><span class="badge badge-warning">Pendiente</span></td>
+                            <td>
+                                <button class="btn btn-primary">Ver</button>
+                                <button class="btn btn-warning">Facturar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>VT-2026-003</td>
+                            <td>Talleres Unidos</td>
+                            <td>17/02/2026</td>
+                            <td>$3,200</td>
+                            <td><span class="badge badge-success">Pagado</span></td>
+                            <td>
+                                <button class="btn btn-primary">Ver</button>
+                                <button class="btn btn-warning">Facturar</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- COMPRAS -->
+            <div id="compras" class="section">
+                <div class="card">
+                    <h3>🛒 Órdenes de Compra</h3>
+                    <div class="search-box">
+                        <input type="text" placeholder="Buscar orden...">
+                        <button class="btn btn-success">➕ Nueva Compra</button>
+                    </div>
+                    <table>
+                        <tr>
+                            <th>Orden #</th>
+                            <th>Proveedor</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                        <tr>
+                            <td>OC-2026-001</td>
+                            <td>Acero Industrial MX</td>
+                            <td>19/02/2026</td>
+                            <td>$45,000</td>
+                            <td><span class="badge badge-warning">Enviada</span></td>
+                            <td>
+                                <button class="btn btn-primary">Ver</button>
+                                <button class="btn btn-success">Recibir</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>OC-2026-002</td>
+                            <td>Ferretería Mayorista</td>
+                            <td>18/02/2026</td>
+                            <td>$12,800</td>
+                            <td><span class="badge badge-success">Recibida</span></td>
+                            <td>
+                                <button class="btn btn-primary">Ver</button>
+                                <button class="btn btn-success">Recibir</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- CLIENTES -->
+            <div id="clientes" class="section">
+                <div class="card">
+                    <h3>👥 Directorio de Clientes</h3>
+                    <div class="search-box">
+                        <input type="text" placeholder="Buscar cliente...">
+                        <button class="btn btn-success">➕ Nuevo Cliente</button>
+                    </div>
+                    <table>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Contacto</th>
+                            <th>Teléfono</th>
+                            <th>Crédito</th>
+                            <th>Acciones</th>
+                        </tr>
+                        <tr>
+                            <td>CLI-001</td>
+                            <td>Constructora del Norte</td>
+                            <td>Juan Pérez</td>
+                            <td>555-0123</td>
+                            <td>$50,000</td>
+                            <td>
+                                <button class="btn btn-primary">Editar</button>
+                                <button class="btn btn-primary">Historial</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>CLI-002</td>
+                            <td>Industrias Metálicas SA</td>
+                            <td>María González</td>
+                            <td>555-0456</td>
+                            <td>$100,000</td>
+                            <td>
+                                <button class="btn btn-primary">Editar</button>
+                                <button class="btn btn-primary">Historial</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>CLI-003</td>
+                            <td>Talleres Unidos</td>
+                            <td>Carlos Ruiz</td>
+                            <td>555-0789</td>
+                            <td>$25,000</td>
+                            <td>
+                                <button class="btn btn-primary">Editar</button>
+                                <button class="btn btn-primary">Historial</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PROVEEDORES -->
+            <div id="proveedores" class="section">
+                <div class="card">
+                    <h3>🚚 Proveedores</h3>
+                    <div class="search-box">
+                        <input type="text" placeholder="Buscar proveedor...">
+                        <button class="btn btn-success">➕ Nuevo Proveedor</button>
+                    </div>
+                    <table>
+                        <tr>
+                            <th>ID</th>
+                            <th>Empresa</th>
+                            <th>Contacto</th>
+                            <th>Teléfono</th>
+                            <th>Email</th>
+                            <th>Acciones</th>
+                        </tr>
+                        <tr>
+                            <td>PROV-001</td>
+                            <td>Acero Industrial MX</td>
+                            <td>Luis Hernández</td>
+                            <td>555-1111</td>
+                            <td>ventas@aceroind.mx</td>
+                            <td>
+                                <button class="btn btn-primary">Editar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>PROV-002</td>
+                            <td>Ferretería Mayorista</td>
+                            <td>Ana López</td>
+                            <td>555-2222</td>
+                            <td>pedidos@ferremayor.com</td>
+                            <td>
+                                <button class="btn btn-primary">Editar</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- REPORTES -->
+            <div id="reportes" class="section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Ventas del Mes</h3>
+                        <div class="number">$125,430</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Compras del Mes</h3>
+                        <div class="number">$89,200</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Utilidad Bruta</h3>
+                        <div class="number">$36,230</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Margen</h3>
+                        <div class="number">28.9%</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>📊 Reportes Disponibles</h3>
+                    <table>
+                        <tr>
+                            <th>Reporte</th>
+                            <th>Descripción</th>
+                            <th>Última Generación</th>
+                            <th>Acción</th>
+                        </tr>
+                        <tr>
+                            <td>Ventas por Período</td>
+                            <td>Análisis detallado de ventas mensuales</td>
+                            <td>18/02/2026</td>
+                            <td><button class="btn btn-primary">Generar PDF</button></td>
+                        </tr>
+                        <tr>
+                            <td>Inventario Actual</td>
+                            <td>Stock completo con valorización</td>
+                            <td>19/02/2026</td>
+                            <td><button class="btn btn-primary">Generar PDF</button></td>
+                        </tr>
+                        <tr>
+                            <td>Cuentas por Cobrar</td>
+                            <td>Clientes con pagos pendientes</td>
+                            <td>17/02/2026</td>
+                            <td><button class="btn btn-primary">Generar PDF</button></td>
+                        </tr>
+                        <tr>
+                            <td>Rotación de Inventario</td>
+                            <td>Productos más/menos vendidos</td>
+                            <td>15/02/2026</td>
+                            <td><button class="btn btn-primary">Generar PDF</button></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- CONFIGURACIÓN -->
+            <div id="config" class="section">
+                <div class="card">
+                    <h3>⚙️ Configuración del Sistema</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nombre de la Empresa</label>
+                            <input type="text" value="Grupo Industrial 4P">
+                        </div>
+                        <div class="form-group">
+                            <label>RFC</label>
+                            <input type="text" value="GIP040512ABC">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Dirección</label>
+                            <input type="text" value="Av. Industrial 123, Ciudad">
+                        </div>
+                        <div class="form-group">
+                            <label>Teléfono</label>
+                            <input type="text" value="555-123-4567">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Moneda Predeterminada</label>
+                            <select>
+                                <option selected>MXN - Peso Mexicano</option>
+                                <option>USD - Dólar Americano</option>
+                                <option>EUR - Euro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Zona Horaria</label>
+                            <select>
+                                <option selected>America/Mexico_City</option>
+                                <option>America/New_York</option>
+                                <option>America/Los_Angeles</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-success" onclick="alert('Configuración guardada')">💾 Guardar Cambios</button>
+                </div>
+                
+                <div class="card">
+                    <h3>👤 Usuarios del Sistema</h3>
+                    <table>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Email</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                        <tr>
+                            <td>Administrador</td>
+                            <td>admin@4p.com</td>
+                            <td>Super Admin</td>
+                            <td><span class="badge badge-success">Activo</span></td>
+                            <td><button class="btn btn-primary">Editar</button></td>
+                        </tr>
+                        <tr>
+                            <td>Demo User</td>
+                            <td>demo@erppro.com</td>
+                            <td>Operador</td>
+                            <td><span class="badge badge-success">Activo</span></td>
+                            <td><button class="btn btn-primary">Editar</button></td>
+                        </tr>
+                    </table>
+                    <button class="btn btn-success" style="margin-top: 15px;">➕ Nuevo Usuario</button>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -326,7 +781,7 @@
             
             if (VALID_CREDENTIALS[email] && VALID_CREDENTIALS[email] === password) {
                 errorMsg.style.display = 'none';
-                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('loginScreen').classList.add('hidden');
                 document.getElementById('dashboardScreen').style.display = 'block';
                 document.getElementById('userDisplay').textContent = email;
                 
@@ -345,7 +800,7 @@
             const session = localStorage.getItem('erp_session');
             if (session) {
                 const data = JSON.parse(session);
-                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('loginScreen').classList.add('hidden');
                 document.getElementById('dashboardScreen').style.display = 'block';
                 document.getElementById('userDisplay').textContent = data.email;
             }
@@ -354,14 +809,40 @@
         function logout() {
             localStorage.removeItem('erp_session');
             document.getElementById('dashboardScreen').style.display = 'none';
-            document.getElementById('loginScreen').style.display = 'block';
+            document.getElementById('loginScreen').classList.remove('hidden');
             document.getElementById('email').value = '';
             document.getElementById('password').value = '';
             document.getElementById('errorMsg').style.display = 'none';
+            showSection('inicio');
         }
 
-        function showSection(section) {
-            alert('Sección ' + section + ' - En desarrollo');
+        function showSection(sectionId) {
+            // Ocultar todas las secciones
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Quitar clase active de todos los nav
+            document.querySelectorAll('.sidebar nav ul li a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Mostrar sección seleccionada
+            document.getElementById(sectionId).classList.add('active');
+            document.getElementById('nav-' + sectionId).classList.add('active');
+            
+            // Actualizar título
+            const titles = {
+                'inicio': 'Panel de Control',
+                'inventario': 'Gestión de Inventario',
+                'ventas': 'Órdenes de Venta',
+                'compras': 'Órdenes de Compra',
+                'clientes': 'Directorio de Clientes',
+                'proveedores': 'Proveedores',
+                'reportes': 'Reportes y Estadísticas',
+                'config': 'Configuración del Sistema'
+            };
+            document.getElementById('pageTitle').textContent = titles[sectionId];
         }
     </script>
 </body>
